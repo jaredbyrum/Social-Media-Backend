@@ -80,12 +80,13 @@ module.exports = {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $push: { friends: req.params.friendsId } },
+        { $addToSet: { friends: req.params.friendsId } },
         { runValidators: true, new: true }
       );
       if (!user) {
         return res.status(404).json({ message: "No user with this username!" });
-      }  
+      }
+      res.json(user);  
     } catch (err) {
       res.status(500).json(err);
     }
@@ -102,6 +103,7 @@ module.exports = {
       if (!user) {
         return res.status(404).json({ message: "No user with this username!" })
       }
+      res.json(user);
     } catch (err) {
       res.status(500).json(err);
     }
